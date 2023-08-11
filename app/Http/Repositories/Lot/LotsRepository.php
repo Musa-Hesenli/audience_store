@@ -14,7 +14,10 @@ class LotsRepository implements LotRepositoryInterface
         if ( ! empty( $fields[ 'categories' ] ) )
         {
             $isCategoriesValid = Category::whereIn( 'id', $fields[ 'categories' ] )->count() === count( $fields[ 'categories' ] );
-            abort_if( ! $isCategoriesValid, 400, "Categories are not valid" );
+            if ( ! $isCategoriesValid )
+            {
+                throw new \Exception( "Categories are not valid" );
+            }
         }
 
         $lot = new Lot();
